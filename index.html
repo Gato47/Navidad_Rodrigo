@@ -12,7 +12,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Great+Vibes&family=Montserrat:wght@400;700&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* VARIABLES DE COLOR Y ESTILO */
+        /* ========================================== */
+        /* ESTILOS CSS */
+        /* ========================================== */
+
         :root {
             --gold-dark: #dba51b;
             --gold-light: #ebc909e1;
@@ -23,45 +26,52 @@
 
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Montserrat', sans-serif; }
 
-        /* NUEVOS ESTILOS PARA TEXTOS DE GUÍA */
         .guia-texto {
-            position: absolute;
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.6);
-            background: rgba(255, 255, 255, 0.05);
-            padding: 4px 8px;
-            border-radius: 4px;
-            pointer-events: none; /* No bloquea el clic */
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: opacity 0.5s;
-            z-index: 2000;
+            position: absolute; font-size: 0.7rem; color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.05); padding: 4px 8px; border-radius: 4px;
+            pointer-events: none; text-transform: uppercase; letter-spacing: 1px;
+            transition: opacity 0.5s; z-index: 2000;
         }
 
-        /* ANIMACIÓN DE FLOTADO */
         @keyframes animeFloat {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-20px); }
         }
 
-        /* --- FASE 1: PANTALLA DE INICIO --- */
+        /* --- PANTALLA 1: INICIO --- */
         #intro-screen {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url('caja.jpg');
+            background-size: cover; background-position: center;
             position: fixed; inset: 0; display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 2000;
-            background: var(--bg-elegant);
+            background-color: #000; overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute; top: -10px;
+            background: radial-gradient(circle, #fff 0%, #f0f8ff 70%, transparent 100%);
+            border-radius: 50%; opacity: 0.9; pointer-events: none;
+            box-shadow: 0 0 4px #fff, 0 2px 8px rgba(255,255,255,0.6);
+            animation: fall linear infinite; filter: blur(0.3px);
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(110vh) translateX(var(--sway, 20px)); opacity: 0; }
         }
 
         .elegant-title {
             font-family: 'Cinzel Decorative', serif; font-size: clamp(4rem, 10vw, 7rem);
             color: #fff; text-align: center; margin-bottom: 50px;
-            text-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red), 4px 4px 0px #4a0000; 
-            animation: animeFloat 4s ease-in-out infinite;
+            text-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red), 4px 4px 0px #4a0000;
+            animation: animeFloat 4s ease-in-out infinite; z-index: 2001;
         }
 
         .neon-button-container {
             padding: 4px; background: linear-gradient(90deg, var(--neon-red), #ff0000, var(--neon-red));
             border-radius: 8px; box-shadow: 0 0 20px var(--neon-red);
-            animation: animeFloat 4s ease-in-out infinite 0.5s;
+            animation: animeFloat 4s ease-in-out infinite 0.5s; z-index: 2001;
         }
 
         .neon-button {
@@ -73,11 +83,27 @@
         }
         .neon-button:hover { background: var(--neon-red); color: white; text-shadow: none; }
 
-        /* --- FASE 2: LA CARTA --- */
+        /* --- PANTALLA 2: CARTA --- */
         #letter-stage {
             position: fixed; inset: 0; z-index: 1500; pointer-events: none;
             display: flex; justify-content: center; align-items: flex-end;
             perspective: 1000px;
+            background: radial-gradient(circle, rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url('muñeco.jpg');
+            background-size: cover; background-position: center;
+        }
+        
+        #letter-snow { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+
+        .letter-flake {
+            position: absolute; top: -20px; color: #fff; font-size: 20px; opacity: 0.8;
+            content: '❄'; text-shadow: 0 0 5px rgba(255,255,255,0.8);
+            animation: fall-letter linear infinite;
+        }
+
+        @keyframes fall-letter {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
         }
 
         #letter-container {
@@ -89,7 +115,7 @@
             width: 100%; height: 100%; background: var(--deep-red);
             border-radius: 5px; position: relative; z-index: 2;
             box-shadow: 0 25px 50px rgba(0,0,0,0.9), inset 0 0 30px rgba(0,0,0,0.5);
-            border: 2px solid #ca0606c9;
+            border: 2px solid #f00f0fc9;
             background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
         }
 
@@ -122,82 +148,101 @@
         .papyrus-content {
             height: 100%; box-sizing: border-box; padding: 30px;
             border: 5px double var(--deep-red); outline: 2px solid var(--gold-dark);
-            outline-offset: -10px; text-align: center; color: #910000;
+            outline-offset: -10px; text-align: center; color: #8b0505;
         }
         .papyrus-content h2 { font-family: 'Great Vibes', cursive; font-size: 3rem; margin: 0 0 20px 0; }
         .papyrus-content p { font-family: 'Playfair Display', serif; font-size: 1.1rem; line-height: 1.6; }
 
-        /* --- UI --- */
+        /* UI y Botones */
         .music-ui {
             position: fixed; top: 20px; left: 20px; z-index: 3000; display: flex; gap: 10px;
-            background: rgba(0,0,0,0.5); padding: 8px; border-radius: 30px; border: 1px solid var(--gold-dark);
+            background: rgba(0, 0, 0, 0); padding: 8px; border-radius: 30px; border: 1px solid var(--white);
         }
-        .ui-btn { background: var(--gold-dark); color: #fff; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; }
+        .ui-btn { background: var(--white); color: #fff; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; }
 
         .top-right-seal {
             position: fixed; top: 20px; right: 20px; z-index: 3000;
-            width: 60px; height: 60px; background: radial-gradient(circle, var(--gold-light), var(--gold-dark));
+            width: 60px; height: 60px; background: radial-gradient(circle, var(--white), var(--white));
             border-radius: 50%; border: 3px solid #fff; cursor: pointer;
             display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 20px var(--gold-light); transition: 0.3s; font-family: 'Cinzel Decorative'; font-size: 30px; color: #3a2300;
+            box-shadow: 0 0 20px var(--gold-light); transition: 0.3s; font-family: 'Cinzel Decorative'; font-size: 30px; color: #d8d5d1;
         }
         .top-right-seal:hover { transform: rotate(15deg) scale(1.1); }
 
         #bottom-text {
-            position: fixed; bottom: 30px; width: 100%; text-align: center;
-            font-family: 'Cinzel Decorative', serif; font-size: 2.5rem; color: var(--gold-light);
-            z-index: 100; pointer-events: none; opacity: 0; text-shadow: 0 0 10px var(--gold-dark);
-            animation: animeFloat 5s ease-in-out infinite;
-        }
+                    position: fixed; bottom: 25px; width: 100%; text-align: center;
 
-        /* --- PANTALLA FINAL --- */
+                    /* Usamos la fuente cursiva que ya tienes cargada para que se parezca más a un letrero */
+                    font-family: 'Great Vibes', cursive; 
+                    font-size: clamp(3.5rem, 8vw, 6rem); /* Más grande y legible */
+
+                    /* --- EFECTO NEÓN TIPO IMAGEN (Naranja/Dorado Fuego) --- */
+                    color: #fff; /* El centro de la letra es blanco (como el tubo de luz) */
+                    text-shadow:
+                        0 0 5px #fff,       /* Brillo interno */
+                        0 0 10px #fff,      /* Intensidad blanca */
+                        0 0 20px #ff4800,   /* Primer halo dorado */
+                        0 0 30px #ff5100fb,   /* Halo naranja intenso */
+                        0 0 40px #ff0022,   /* Halo rojizo */
+                        0 0 55px #ff0000,   /* Resplandor lejano rojo */
+                        0 0 75px #dd0000;   /* Ambiente */
+                    
+                    z-index: 100; pointer-events: none; opacity: 0;
+                    animation: animeFloat 5s ease-in-out infinite;
+                }
+        /* --- PANTALLA 3: FINAL --- */
         #final-screen {
-            position: fixed; inset: 0; 
-            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+            position: fixed; inset: 0;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('gatoR.jpg');
+            background-size: cover; background-position: center;
             z-index: 4000; display: none; flex-direction: column; 
             justify-content: center; align-items: center; overflow: hidden;
             text-align: center; padding: 20px; box-sizing: border-box;
         }
 
-        #final-screen::before {
-            content: ""; position: absolute; width: 200%; height: 200%;
-            background: url('https://www.transparenttextures.com/patterns/asfalt-dark.png'), 
-                        radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-            animation: smokeMove 20s linear infinite; opacity: 0.4;
-        }
-
-        @keyframes smokeMove {
-            from { transform: translate(-10%, -10%) rotate(0deg); }
-            to { transform: translate(10%, 10%) rotate(5deg); }
-        }
-
         .final-msg {
-            font-family: 'Cinzel Decorative', serif;
-            font-size: clamp(2.5rem, 8vw, 6rem);
-            font-weight: 900;
+            font-family: 'Cinzel Decorative', serif; font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900;
             background: linear-gradient(to bottom, #ffffff 0%, #a2a2a2 45%, #ffffff 50%, #757575 55%, #999999 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 0 15px rgba(255,255,255,0.5)) drop-shadow(5px 5px 0px rgba(0,0,0,0.8));
             letter-spacing: 2px; margin: 0; z-index: 10;
-            animation: animeFloat 4s ease-in-out infinite;
-            display: block; width: 100%;
+            animation: animeFloat 4s ease-in-out infinite; display: block; width: 100%;
         }
 
         .final-sign {
-            font-family: 'Playfair Display', serif;
-            font-style: italic; font-size: clamp(1.2rem, 5vw, 2.2rem);
-            color: #e0e0e0; margin-top: 10px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,1);
-            z-index: 10; border-top: 1px solid rgba(255,255,255,0.2);
-            padding-top: 20px; width: 80%; max-width: 500px;
+            font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.2rem, 5vw, 2.2rem);
+            color: #e0e0e0; margin-top: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,1);
+            z-index: 10; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; width: 80%; max-width: 500px;
             animation: animeFloat 4s ease-in-out infinite 0.3s;
+        }
+
+        /* --- NUEVO BOTÓN DE REINICIO (R) --- */
+        .restart-button {
+            margin-top: 40px;
+            width: 70px; height: 70px;
+            background: radial-gradient(circle, var(--white), var(--white));
+            border-radius: 50%;
+            border: 4px double #fff;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 25px var(--gold-light), 0 0 10px rgba(0,0,0,0.8);
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 35px; color: #660808; font-weight: bold;
+            z-index: 100;
+            transition: all 0.3s ease;
+            animation: animeFloat 4s ease-in-out infinite 0.6s;
+        }
+        .restart-button:hover {
+            transform: scale(1.1) rotate(360deg);
+            box-shadow: 0 0 40px var(--gold-light);
+            color: #fff;
         }
     </style>
 </head>
 <body>
 
     <div id="intro-screen">
+        <div id="intro-snow"></div>
         <h1 class="elegant-title">Feliz Navidad</h1>
         <div class="neon-button-container">
             <button class="neon-button" onclick="startExperience()">Abre esta experiencia</button>
@@ -208,17 +253,17 @@
     <div id="guia-estrella" class="guia-texto" style="top: 80%; left: 30%; transform: translate(-50%, 80px); display: none; opacity: 0;">Toca la estrella una y otra vez</div>
     <div id="guia-final" class="guia-texto" style="top: 90px; right: 20px; display: none;">Finalizar</div>
 
-    <!-- UI de música simplificada: solo botón play/pause -->
     <div class="music-ui">
         <button class="ui-btn" id="play-btn">▶</button>
     </div>
 
-    <!-- Audio con tu música local (misma carpeta que el HTML) -->
     <audio id="bg-music" src="Snowfall.mp3" loop></audio>
 
     <div class="top-right-seal" onclick="showFinal()">R</div>
 
     <div id="letter-stage">
+        <div id="letter-snow"></div>
+        
         <div id="letter-container">
             <div class="envelope">
                 <div class="ribbon"></div>
@@ -239,10 +284,53 @@
     <div id="final-screen">
         <h1 class="final-msg">FELIZ NAVIDAD</h1>
         <h2 class="final-sign">Atentamente, Rodrigo</h2>
+        
+        <div class="restart-button" onclick="resetExperience()" title="Volver al inicio">R</div>
     </div>
 
     <script>
-        /* LÓGICA DE JAVASCRIPT Y 3D */
+        /* --- LOGICA NIEVE INICIO --- */
+        function createIntroSnow() {
+            const snowContainer = document.getElementById('intro-snow');
+            const count = 200;
+            for(let i = 0; i < count; i++) {
+                const snow = document.createElement('div');
+                snow.classList.add('snowflake');
+                const size = Math.random() * 6 + 2;
+                snow.style.width = `${size}px`; snow.style.height = `${size}px`;
+                snow.style.left = `${Math.random() * 100}%`;
+                const duration = Math.random() * 8 + 6;
+                const sway = Math.random() * 40 - 20;
+                snow.style.setProperty('--sway', `${sway}px`);
+                snow.style.animationDuration = `${duration}s`;
+                snow.style.animationDelay = `${Math.random() * 5}s`;
+                snow.style.opacity = Math.random() * 0.4 + 0.4;
+                snowContainer.appendChild(snow);
+            }
+        }
+        createIntroSnow();
+
+        /* --- LOGICA NIEVE CARTA --- */
+        function createLetterSnow() {
+            const container = document.getElementById('letter-snow');
+            const count = 40;
+            const symbols = ['❄', '❅', '❆', '•'];
+            for(let i = 0; i < count; i++) {
+                const flake = document.createElement('div');
+                flake.classList.add('letter-flake');
+                flake.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                const size = Math.random() * 20 + 10; 
+                flake.style.fontSize = `${size}px`; flake.style.left = `${Math.random() * 100}%`;
+                const duration = Math.random() * 5 + 5;
+                flake.style.animationDuration = `${duration}s`;
+                flake.style.animationDelay = `${Math.random() * 5}s`;
+                if(size < 15) { flake.style.filter = `blur(1px)`; flake.style.opacity = 0.6; }
+                container.appendChild(flake);
+            }
+        }
+        createLetterSnow();
+
+        /* --- MUNDO 3D --- */
         let scene, camera, renderer, star, points, galaxy, shootingStars, controls;
         let isExploded = false;
         const particleCount = 65000; 
@@ -252,6 +340,7 @@
         let letterState = 'closed';
 
         function init3D() {
+            if(scene) return; // Evitar crear escena doble al reiniciar
             scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2(0x000000, 0.02); 
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -265,20 +354,16 @@
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true; controls.autoRotate = true; controls.autoRotateSpeed = 0.5;
 
-            createGalaxy();      
-            prepareTreeData();   
-            createStar();        
-            animate();           
+            createGalaxy(); prepareTreeData(); createStar(); animate();           
+        }
 
+        function launchTreeAnimation() {
+            // Esta función reinicia la animación del árbol armándose
             gsap.to(currentPos, {
-                duration: 5,
-                endArray: targetPos,
-                ease: "expo.out",
+                duration: 5, endArray: targetPos, ease: "expo.out",
                 onUpdate: () => points.geometry.attributes.position.needsUpdate = true
             });
             gsap.to("#bottom-text", { opacity: 1, duration: 3, delay: 2 });
-
-            // Mostrar guía de estrella y salir
             document.getElementById('guia-estrella').style.display = 'block';
             gsap.to("#guia-estrella", { opacity: 1, duration: 2 });
             document.getElementById('guia-final').style.display = 'block';
@@ -289,15 +374,11 @@
             for (let i = 0; i < particleCount; i++) {
                 const t = Math.random();
                 const angle = 25 * Math.PI * t; 
-                const radius = 3 * (1 - t);     
-                const spread = 0.4 * (1 -t);
-
+                const radius = 3 * (1 - t); const spread = 0.4 * (1 -t);
                 targetPos[i*3] = Math.cos(angle) * radius + (Math.random()-0.5)*spread;
                 targetPos[i*3+1] = t * 7 - 3.5;
                 targetPos[i*3+2] = Math.sin(angle) * radius + (Math.random()-0.5)*spread;
-
                 currentPos[i*3] = 0; currentPos[i*3+1] = 0; currentPos[i*3+2] = 0;
-
                 const r = Math.random();
                 if(r>0.98) { colors[i*3]=1; colors[i*3+1]=0.2; colors[i*3+2]=0.2; }
                 else if(r>0.96) { colors[i*3]=0.2; colors[i*3+1]=1; colors[i*3+2]=0.2; }
@@ -315,42 +396,31 @@
             const geo = new THREE.SphereGeometry(0.18, 24, 24);
             const mat = new THREE.MeshBasicMaterial({ color: 0xffffff });
             star = new THREE.Mesh(geo, mat);
-            
             const glowGeo = new THREE.SphereGeometry(0.4, 24, 24);
             const glowMat = new THREE.MeshBasicMaterial({ color: 0xff0000, transparent: true, opacity: 0.3 });
             const aura = new THREE.Mesh(glowGeo, glowMat);
-            
             const light = new THREE.PointLight(0xff0000, 8, 15);
-            
             const sparksGeo = new THREE.BufferGeometry();
-            const sparksCount = 200;
+            const sparksCount = 300;
             const sparksPos = new Float32Array(sparksCount * 3);
             for(let i=0; i<sparksCount; i++) {
-                sparksPos[i*3] = (Math.random()-0.5) * 0.8;
-                sparksPos[i*3+1] = (Math.random()-0.5) * 0.8;
-                sparksPos[i*3+2] = (Math.random()-0.5) * 0.8;
+                sparksPos[i*3] = (Math.random()-0.5) * 0.8; sparksPos[i*3+1] = (Math.random()-0.5) * 0.8; sparksPos[i*3+2] = (Math.random()-0.5) * 0.8;
             }
             sparksGeo.setAttribute('position', new THREE.BufferAttribute(sparksPos, 3));
             const sparksMat = new THREE.PointsMaterial({ color: 0xff4444, size: 0.03, transparent: true });
             const sparks = new THREE.Points(sparksGeo, sparksMat);
-
             starGroup.add(star); starGroup.add(aura); starGroup.add(light); starGroup.add(sparks);
-            starGroup.position.y = 3.7;
-            scene.add(starGroup);
-
+            starGroup.position.y = 3.7; scene.add(starGroup);
             gsap.to(aura.scale, { x: 1.5, y: 1.5, z: 1.5, duration: 1, repeat: -1, yoyo: true, ease: "sine.inOut" });
         }
 
         function createGalaxy() {
-            const bgGeo = new THREE.BufferGeometry();
-            const bgPos = [];
-            for(let i=0; i<20000; i++) bgPos.push((Math.random()-0.5)*200, (Math.random()-0.5)*200, (Math.random()-0.5)*200);
+            const bgGeo = new THREE.BufferGeometry(); const bgPos = [];
+            for(let i=0; i<100000; i++) { bgPos.push((Math.random()-0.5)*200, (Math.random()-0.5)*200, (Math.random()-0.5)*200); }
             bgGeo.setAttribute('position', new THREE.Float32BufferAttribute(bgPos, 3));
-            galaxy = new THREE.Points(bgGeo, new THREE.PointsMaterial({color: 0xffffff, size: 0.05}));
+            galaxy = new THREE.Points(bgGeo, new THREE.PointsMaterial({color: 0xffffff, size: 0.09, transparent: true, opacity: 0.9}));
             scene.add(galaxy);
-
-            const shootGeo = new THREE.BufferGeometry();
-            const shootPos = new Float32Array(100 * 3 * 2);
+            const shootGeo = new THREE.BufferGeometry(); const shootPos = new Float32Array(100 * 3 * 2);
             shootingStars = new THREE.LineSegments(shootGeo, new THREE.LineBasicMaterial({color: 0xffffff, transparent: true, opacity: 0.6}));
             scene.add(shootingStars);
         }
@@ -360,18 +430,13 @@
             if(points && !isExploded) {
                 const pos = points.geometry.attributes.position.array;
                 for(let i=0; i<particleCount; i++) {
-                    if(Math.random() > 0.995) {
-                        pos[i*3] = (Math.random()-0.5)*0.1; pos[i*3+1] = -3.5; pos[i*3+2] = (Math.random()-0.5)*0.1;
-                    }
+                    if(Math.random() > 0.995) { pos[i*3] = (Math.random()-0.5)*0.1; pos[i*3+1] = -3.5; pos[i*3+2] = (Math.random()-0.5)*0.1; }
                     if(pos[i*3+1] < targetPos[i*3+1]) {
-                         pos[i*3] += (targetPos[i*3] - pos[i*3]) * 0.02;
-                         pos[i*3+1] += (targetPos[i*3+1] - pos[i*3+1]) * 0.02;
-                         pos[i*3+2] += (targetPos[i*3+2] - pos[i*3+2]) * 0.02;
+                         pos[i*3] += (targetPos[i*3] - pos[i*3]) * 0.02; pos[i*3+1] += (targetPos[i*3+1] - pos[i*3+1]) * 0.02; pos[i*3+2] += (targetPos[i*3+2] - pos[i*3+2]) * 0.02;
                     }
                 }
                 points.geometry.attributes.position.needsUpdate = true;
             }
-
             if(shootingStars) {
                 const positions = shootingStars.geometry.attributes.position?.array || new Float32Array(100 * 3 * 2);
                 for(let i=0; i<100; i++) {
@@ -380,36 +445,26 @@
                         positions[i*6] = x; positions[i*6+1] = y; positions[i*6+2] = z;
                         positions[i*6+3] = x - 2; positions[i*6+4] = y - 2; positions[i*6+5] = z - 2;
                     }
-                     positions[i*6] -= 0.5; positions[i*6+1] -= 0.5; positions[i*6+2] -= 0.5;
-                     positions[i*6+3] -= 0.5; positions[i*6+4] -= 0.5; positions[i*6+5] -= 0.5;
+                     positions[i*6] -= 0.5; positions[i*6+1] -= 0.5; positions[i*6+2] -= 0.5; positions[i*6+3] -= 0.5; positions[i*6+4] -= 0.5; positions[i*6+5] -= 0.5;
                 }
                 shootingStars.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
             }
-
-            galaxy.rotation.y += 0.0002;
-            controls.update();
-            renderer.render(scene, camera);
+            galaxy.rotation.y += 0.0002; controls.update(); renderer.render(scene, camera);
         }
 
         const bgMusic = document.getElementById('bg-music');
         const playBtn = document.getElementById('play-btn');
 
-        // Reproduce música cuando se inicia la experiencia (primer clic del usuario)
         function startExperience() {
-            // Intentar reproducir la música en el clic del botón (apto para móviles)
             const playPromise = bgMusic.play();
             if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    playBtn.innerText = "||";
-                }).catch(() => {
-                    // Si el navegador bloquea, el usuario puede usar el botón ▶
-                    playBtn.innerText = "▶";
-                });
+                playPromise.then(() => { playBtn.innerText = "||"; }).catch(() => { playBtn.innerText = "▶"; });
             }
-
             gsap.to("#intro-screen", { opacity: 0, duration: 1, onComplete: () => {
                 document.getElementById('intro-screen').style.display = 'none';
-                gsap.to("#letter-container", { bottom: "50px", duration: 1.5, ease: "back.out(1)", onComplete: () => {
+                // Aseguramos que la carta esté visible
+                document.getElementById('letter-container').style.display = 'block';
+                gsap.to("#letter-container", { bottom: "50px", opacity: 1, scale: 1, rotation: 0, duration: 1.5, ease: "back.out(1)", onComplete: () => {
                     document.getElementById('guia-sello').style.display = 'block';
                 }});
             }});
@@ -418,35 +473,29 @@
         function handleSealClick() {
             const papyrus = document.getElementById('papyrus');
             const container = document.getElementById('letter-container');
+            const stage = document.getElementById('letter-stage');
             const guia = document.getElementById('guia-sello');
 
             if(letterState === 'closed') {
-                papyrus.classList.add('open');
-                guia.innerText = "Cierra la carta con el sello";
-                letterState = 'open';
+                papyrus.classList.add('open'); guia.innerText = "Cierra la carta con el sello"; letterState = 'open';
             } else if (letterState === 'open') {
-                papyrus.classList.remove('open');
-                guia.style.display = 'none';
-                letterState = 'sealed';
+                papyrus.classList.remove('open'); guia.style.display = 'none'; letterState = 'sealed';
                 setTimeout(() => {
-                    gsap.to(container, { 
-                        scale: 0, opacity: 0, rotation: 720, duration: 1, ease: "power2.in",
-                        onComplete: () => {
-                            container.style.display = 'none';
-                            init3D();
-                        }
-                    });
+                    gsap.to(container, { scale: 0, opacity: 0, rotation: 720, duration: 1, ease: "power2.in" });
+                    gsap.to(stage, { opacity: 0, duration: 1.5, delay: 0.5, onComplete: () => {
+                        stage.style.display = 'none';
+                        init3D(); // Crea la escena si no existe
+                        launchTreeAnimation(); // Lanza la animación del árbol
+                    }});
                 }, 1000);
             }
         }
 
-        /* --- CORRECCIÓN EXPLOSIÓN ANDROID --- */
         window.addEventListener('pointerdown', (e) => {
             if(!star || letterState !== 'sealed') return;
             const mouse = new THREE.Vector2((e.clientX/window.innerWidth)*2-1, -(e.clientY/window.innerHeight)*2+1);
             const ray = new THREE.Raycaster(); ray.setFromCamera(mouse, camera);
             if(ray.intersectObject(star).length > 0) {
-                // Quitar guía de estrella al primer toque
                 document.getElementById('guia-estrella').style.display = 'none';
                 if(!isExploded) {
                     const burst = new Float32Array(particleCount * 3);
@@ -465,17 +514,47 @@
             document.getElementById('final-screen').style.display = 'flex'; 
         }
 
-        // Botón play/pause manual (por si el navegador bloquea el autoplay)
+        /* --- NUEVA FUNCIÓN: REINICIAR EXPERIENCIA --- */
+        function resetExperience() {
+            // 1. Ocultar pantalla final
+            document.getElementById('final-screen').style.display = 'none';
+            
+            // 2. Mostrar Intro
+            const intro = document.getElementById('intro-screen');
+            intro.style.display = 'flex';
+            intro.style.opacity = 1;
+
+            // 3. Resetear Música
+            bgMusic.pause(); bgMusic.currentTime = 0; playBtn.innerText = "▶";
+
+            // 4. Restaurar Carta y Escenario
+            const stage = document.getElementById('letter-stage');
+            stage.style.display = 'flex'; 
+            stage.style.opacity = 1;
+            
+            // 5. Resetear estado de carta
+            letterState = 'closed';
+            const papyrus = document.getElementById('papyrus');
+            papyrus.classList.remove('open');
+            
+            const container = document.getElementById('letter-container');
+            // IMPORTANTE: Restaurar estilos modificados por GSAP
+            container.style.bottom = "-300px";
+            container.style.opacity = "1";
+            container.style.transform = "none";
+            container.style.display = "block";
+
+            // 6. Resetear variables 3D (para que el árbol se vuelva a armar)
+            isExploded = false;
+            // Ocultar textos del árbol
+            document.getElementById('bottom-text').style.opacity = 0;
+        }
+
         playBtn.addEventListener('click', () => {
             if (bgMusic.paused) {
-                bgMusic.play().then(() => {
-                    playBtn.innerText = "||";
-                }).catch(() => {
-                    playBtn.innerText = "▶";
-                });
+                bgMusic.play().then(() => { playBtn.innerText = "||"; }).catch(() => { playBtn.innerText = "▶"; });
             } else {
-                bgMusic.pause();
-                playBtn.innerText = "▶";
+                bgMusic.pause(); playBtn.innerText = "▶";
             }
         });
 
